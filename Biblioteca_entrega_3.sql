@@ -1,8 +1,8 @@
 CREATE DATABASE biblioteca2;
-GO
+
 
 USE biblioteca2;
-GO
+
 
 CREATE TABLE libro (
     libro_id INT IDENTITY(1,1) PRIMARY KEY,
@@ -23,7 +23,7 @@ CREATE TABLE editorial (
     editorial_id INT IDENTITY(1,1) PRIMARY KEY,
     nombre_editorial VARCHAR(50) NOT NULL UNIQUE
 );
-GO
+
 
 ALTER TABLE libro ADD genero_id INT NOT NULL;
 ALTER TABLE libro ADD CONSTRAINT FK_genero FOREIGN KEY (genero_id) REFERENCES genero_libro(genero_id);
@@ -36,7 +36,7 @@ ALTER TABLE libro ADD CONSTRAINT FK_editorial FOREIGN KEY (editorial_id) REFEREN
 ALTER TABLE libro DROP COLUMN editorial;
 
 ALTER TABLE libro ADD CONSTRAINT nombre_autor_editorial_unicos UNIQUE (nombre, autor, editorial_id);
-GO
+
 
 
 CREATE TABLE usuario (
@@ -49,7 +49,7 @@ CREATE TABLE usuario (
 
 ALTER TABLE usuario
 ADD CONSTRAINT formato_correo CHECK (correo LIKE '%@%.%');
-GO
+
 
 CREATE TABLE reserva (
     reserva_id INT IDENTITY(1,1) PRIMARY KEY,
@@ -74,7 +74,7 @@ CREATE TABLE renovacion (
 
 ALTER TABLE renovacion
 ADD CONSTRAINT chk_fecha_renovacion CHECK (fecha_renovacion >= GETDATE());
-GO
+
 
 -- Géneros
 INSERT INTO genero_libro (nombre_genero, descripcion) VALUES
@@ -120,7 +120,7 @@ INSERT INTO usuario (nombre, documento, telefono, correo) VALUES
 ('Sofía Rodríguez', '1039876543', '3159876543', 'sofia.r@email.com'),
 ('Carlos Martínez', '80123987', '3005551234', 'carlos.m@email.com'),
 ('Lucía Hernandez', '1045678901', '3123456789', 'lucia.h@email.com');
-GO
+
 
 
 
@@ -132,7 +132,7 @@ BEGIN
     FROM libro
     WHERE stock < @minimo;
 END;
-GO
+
 
 
 CREATE PROCEDURE reservas_por_documento
@@ -153,7 +153,7 @@ BEGIN
     INNER JOIN libro l ON r.libro_id = l.libro_id
     WHERE u.documento = @documento;
 END;
-GO
+
 
 
 CREATE PROCEDURE usp_BuscarLibroPorGenero
@@ -172,7 +172,7 @@ BEGIN
         ON l.genero_id = g.genero_id
     WHERE g.nombre_genero = @GeneroABuscar;
 END;
-GO
+
 
 
 CREATE PROCEDURE registrar_usuario
@@ -212,4 +212,4 @@ BEGIN
         SET @nuevo_usuario_id = NULL;
     END CATCH
 END;
-GO
+
